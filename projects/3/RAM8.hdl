@@ -13,4 +13,6 @@ CHIP RAM8 {
 
     PARTS:
     //// Replace this comment with your code.
+    DMux8Way(in=in, sel=address, a= , b= , c= , d= , e= , f= , g= , h= );
+
 }
