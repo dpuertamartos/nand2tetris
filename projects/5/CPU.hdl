@@ -31,5 +31,42 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+    //INSTRUCTION DECODING
+    //instruction[15] = TYPE OF INSTRUCTION C/M
+
+    Mux16(a=instruction, b=aluout, sel=instruction[15], out=wiretoaregister);
+    Not(in=instruction[15], out=isinstructiona);
+    And(a=instruction[15], b=instruction[5], out=cinstructionsavetoa);
+    Or(a=isinstructiona, b=cinstructionsavetoa, out=ashouldload);
+    ARegister(in=wiretoaregister, load=ashouldload, out=outaregister, out[0..14]=addressM);
+    And(a=instruction[15], b=instruction[4], out=loadD);
+    DRegister(in=aluout, load=loadD, out=outdregister);
+
+    //INSTRUCTION EXECUTION
+    Mux16(a=outaregister, b=inM, sel=instruction[12], out=amoutput);
+    ALU(x=outdregister, y=amoutput, 
+    zx=instruction[11], 
+    nx=instruction[10],
+    zy=instruction[9], 
+    ny=instruction[8], 
+    f=instruction[7],
+    no=instruction[6], 
+    out=aluout, zr=zr, ng=ng, out=outM);
+
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+
+    //NEXT INSTRUCTION FETCHING
+    And(a=instruction[2], b=ng , out=c1);
+    And(a=instruction[1] , b=zr , out=c2);
+    Or(a=ng, b=zr, out=negOrZero);
+    Not(in=negOrZero, out=isPositive);
+    And(a=instruction[0], b=isPositive, out=c3);
+    Or(a=c1 , b=c2 , out=c12);
+    Or(a=c12 , b=c3 , out=shouldjump);
+
+
+    And(a=instruction[15], b=shouldjump, out=instructioncandshouldjump);
+    Not(in=instructioncandshouldjump, out=notinstructioncandshouldjump);
+    PC(in=outaregister, load=instructioncandshouldjump, inc=notinstructioncandshouldjump, reset=reset, out[0..14]=pc);
 }
