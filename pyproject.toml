@@ -1,0 +1,28 @@
+[project]
+name = "nand2tetris"
+version = "0.1.0"
+description = "Python package for nand2tetris"
+requires-python = "==3.11.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.2.0",      
+    "ruff==0.5.3",        
+    "mypy==1.10.1",          
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]

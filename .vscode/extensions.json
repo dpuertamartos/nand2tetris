@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "charliermarsh.ruff",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "mikestead.dotenv",
+        "matangover.mypy",
+        "eamodio.gitlens",
+        "tamasfe.even-better-toml",
+    ]
+}
