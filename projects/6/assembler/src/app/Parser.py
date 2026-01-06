@@ -1,7 +1,10 @@
+from typing import List
+
+
 class Parser:
     def __init__(self, file_path: str) -> None:
-        self.lines = []
-        self.current_pos = -1
+        self.lines: List[str] = []
+        self.current_pos: int = -1
 
         with open(file_path, "r") as file:
             for line in file:
@@ -10,6 +13,9 @@ class Parser:
                     self.lines.append(clean_line)
 
         self.final_pos = len(self.lines) - 1
+
+    def reset(self) -> None:
+        self.current_pos = -1
 
     def hasMoreLines(self) -> bool:
         return self.current_pos < self.final_pos
